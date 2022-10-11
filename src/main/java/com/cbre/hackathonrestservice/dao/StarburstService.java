@@ -7,23 +7,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cbre.hackathonrestservice.controller.HackathonController;
 import com.cbre.hackathonrestservice.dao.entities.Employee;
 import com.cbre.hackathonrestservice.dao.entities.Entity;
 
 @Service
 public class StarburstService {
 
+	private static final Logger logger = LoggerFactory.getLogger(StarburstService.class);
+	
 	@Autowired
 	private StatburstConnection connection;
 		
 	public List<Entity> getEmployeeList() throws Exception{
+		logger.info("--- StarburstService::getEmployeeList()::Start  ---");
 		
 		List<Entity> employees = new ArrayList<Entity>();
 		
-		String sql = "select P.emp_id, S.emp_name, S.region from \"property_listing\".\"people\".\"employee\" as P , \"snowflake_test\".\"DATA\".\"PEOPLE_ALL\" as S where P.emp_name = S.emp_name limit 10 ";
+		String sql = "select P.emp_id, S.emp_name, S.region from \"property_listing\".\"people\".\"employee\" as P , \"snowflake_test\".\"DATA\".\"PEOPLE_ALL\" as S where P.emp_name = S.emp_name limit 25 ";
 		
 		Connection conn = connection.getConnection();
 		Statement stmt;
@@ -50,9 +56,10 @@ public class StarburstService {
 		} catch (SQLException e) {	
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(e.getMessage());
 			throw e;
 		}
-		
+		logger.info("--- StarburstService::getEmployeeList()::End  ---");
 		return employees;
 		
 	}
