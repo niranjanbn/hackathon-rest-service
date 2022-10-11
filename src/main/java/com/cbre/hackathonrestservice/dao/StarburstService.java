@@ -8,17 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cbre.hackathonrestservice.dao.entities.Employee;
+import com.cbre.hackathonrestservice.dao.entities.Entity;
 
+@Service
 public class StarburstService {
 
 	@Autowired
 	private StatburstConnection connection;
 		
-	public List<Employee> getEmployeeList() throws Exception{
+	public List<Entity> getEmployeeList() throws Exception{
 		
-		List<Employee> employees = new ArrayList<Employee>();
+		List<Entity> employees = new ArrayList<Entity>();
 		
 		String sql = "select P.emp_id, S.emp_name, S.region from \"property_listing\".\"people\".\"employee\" as P , \"snowflake_test\".\"DATA\".\"PEOPLE_ALL\" as S where P.emp_name = S.emp_name limit 10 ";
 		

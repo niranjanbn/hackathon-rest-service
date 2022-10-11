@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class StatburstConnection {
 	
 	public Connection getConnection() {

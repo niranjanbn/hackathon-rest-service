@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cbre.hackathonrestservice.controller.output.Response;
+import com.cbre.hackathonrestservice.dao.StarburstService;
 import com.cbre.hackathonrestservice.dao.entities.Employee;
 import com.cbre.hackathonrestservice.dao.entities.Entity;
 
@@ -29,6 +31,9 @@ public class HackathonController {
 	
 	//@Autowired
 	//List<Employee> employees;
+	
+	@Autowired
+	private StarburstService service;
 
 	@GetMapping(path="/status", produces=MediaType.APPLICATION_JSON_VALUE)
 	public String status(){
@@ -49,10 +54,18 @@ public class HackathonController {
 		
 		List<Entity> employees = new ArrayList<Entity>();
 		
+		try {
+			employees = service.getEmployeeList();
+		}catch(Exception e) {
+			e.printStackTrace();
+        	response.setStatus("Failed");
+        	response.setError(e.getMessage());
+		}
+		
 		//String sql = "select id from property_listing.property.listing";
-		String sql = "select P.emp_id, S.emp_name, S.region from \"property_listing\".\"people\".\"employee\" as P , \"snowflake_test\".\"DATA\".\"PEOPLE_ALL\" as S where P.emp_name = S.emp_name limit 10 ";
+		//String sql = "select P.emp_id, S.emp_name, S.region from \"property_listing\".\"people\".\"employee\" as P , \"snowflake_test\".\"DATA\".\"PEOPLE_ALL\" as S where P.emp_name = S.emp_name limit 10 ";
         //System.out.println("1st print stmt");
-        try {
+        /*try {
         
 	        // properties
 	        String url = "jdbc:trino://datapoc-datapoc.trino.galaxy.starburst.io:443";
@@ -88,7 +101,7 @@ public class HackathonController {
         	e.printStackTrace();
         	response.setStatus("Failed");
         	response.setError(e.getMessage());
-        }
+        }*/
         
         System.out.println("Fetch completed. Employees count:"+employees.size());
         if (response.getStatus()!= "Failed" ) {
