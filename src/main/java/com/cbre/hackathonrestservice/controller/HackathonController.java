@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cbre.hackathonrestservice.controller.output.Response;
@@ -90,6 +91,35 @@ public class HackathonController {
 
         response.setResult(employees);
         logger.info("--- HackathonController::getClassificationDetails()::End  ---");
+		return response;
+	}
+	
+	
+	@GetMapping(path="/getLeaseSales", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Response getLeaseSales(@RequestParam(required = false) boolean admin){
+		
+		logger.info("--- getLeaseSales()::Start  ---");
+		logger.info("admin:"+admin);
+		Response response = new Response();
+		
+		List<Entity> leaseSales = new ArrayList<Entity>();
+		
+		try {
+			leaseSales = service.getLeaseSales(admin);
+		}catch(Exception e) {
+			e.printStackTrace();
+        	response.setStatus("Failed");
+        	response.setError(e.getMessage());
+        	logger.error(e.getMessage());
+		}
+        
+        logger.info("--- getLeaseSales::Fetch completed. LeaseSales count:"+leaseSales.size());
+        if (response.getStatus()!= "Failed" ) {
+            response.setStatus("Success");
+        }
+
+        response.setResult(leaseSales);
+        logger.info("--- getLeaseSales::End  ---");
 		return response;
 	}
 }
