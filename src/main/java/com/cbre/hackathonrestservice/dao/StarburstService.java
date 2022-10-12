@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cbre.hackathonrestservice.controller.HackathonController;
+import com.cbre.hackathonrestservice.dao.entities.ClassificationDetails;
 import com.cbre.hackathonrestservice.dao.entities.Employee;
 import com.cbre.hackathonrestservice.dao.entities.Entity;
 
@@ -64,4 +65,41 @@ public class StarburstService {
 		
 	}
 	
+	public List<Entity> getClassificationDetails() throws Exception{
+		logger.info("--- StarburstService::getClassificationDetails()::Start  ---");
+		
+		List<Entity> classifications = new ArrayList<Entity>();
+		
+		String sql = "select p.column_name,c.classificationname from \"property_listing\".\"people\".\"tableclassificationpropertydata\" as p,\"property_listing\".\"people\".\"heckathon_classification\" as c where c.classificationid = p.classification";
+		
+		Connection conn = connection.getConnection();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+		
+        //System.out.println("4th print stmt");
+        ResultSet rs = stmt.executeQuery(sql);
+        //System.out.println("5th print stmt");
+        
+        // Extract data from result set
+        while (rs.next()) {
+           // Retrieve by column name
+           
+           ClassificationDetails classification = new ClassificationDetails();
+           classification.setColumn(rs.getString("column_name"));
+           classification.setClassification(rs.getString("classificationname"));
+           
+           classifications.add(classification);
+           
+        }
+		} catch (SQLException e) {	
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw e;
+		}
+		logger.info("--- StarburstService::getClassificationDetails()::End  ---");
+		return classifications;
+		
+	}
 }

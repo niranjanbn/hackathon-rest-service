@@ -65,4 +65,31 @@ public class HackathonController {
         logger.info("--- HackathonController::getData()::End  ---");
 		return response;
 	}
+	
+	@GetMapping(path="/getClassificationDetails", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Response getClassificationDetails(){
+		
+		logger.info("--- HackathonController::getClassificationDetails()::Start  ---");
+		Response response = new Response();
+		
+		List<Entity> employees = new ArrayList<Entity>();
+		
+		try {
+			employees = service.getClassificationDetails();
+		}catch(Exception e) {
+			e.printStackTrace();
+        	response.setStatus("Failed");
+        	response.setError(e.getMessage());
+        	logger.error(e.getMessage());
+		}
+        
+        logger.info("--- HackathonController::getClassificationDetails()::Fetch completed. Classifications count:"+employees.size());
+        if (response.getStatus()!= "Failed" ) {
+            response.setStatus("Success");
+        }
+
+        response.setResult(employees);
+        logger.info("--- HackathonController::getClassificationDetails()::End  ---");
+		return response;
+	}
 }
