@@ -122,4 +122,112 @@ public class HackathonController {
         logger.info("--- getLeaseSales::End  ---");
 		return response;
 	}
+	
+	@GetMapping(path="/getPropertyClassificationDetails", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Response getPropertyClassificationDetails(){
+		
+		logger.info("--- HackathonController::getPropertyClassificationDetails()::Start  ---");
+		Response response = new Response();
+		
+		List<Entity> propertyList = new ArrayList<Entity>();
+		
+		try {
+			propertyList = service.getPropertyClassificationDetails();
+		}catch(Exception e) {
+			e.printStackTrace();
+        	response.setStatus("Failed");
+        	response.setError(e.getMessage());
+        	logger.error(e.getMessage());
+		}
+        
+        logger.info("--- HackathonController::getPropertyClassificationDetails()::Fetch completed. Classifications count:"+propertyList.size());
+        if (response.getStatus()!= "Failed" ) {
+            response.setStatus("Success");
+        }
+
+        response.setResult(propertyList);
+        logger.info("--- HackathonController::getPropertyClassificationDetails()::End  ---");
+		return response;
+	}
+	
+	@GetMapping(path="/getEmployeeClassificationDetails", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Response getEmployeeClassificationDetails(){
+		
+		logger.info("--- HackathonController::getEmployeeClassificationDetails()::Start  ---");
+		Response response = new Response();
+		
+		List<Entity> employeeList = new ArrayList<Entity>();
+		
+		try {
+			employeeList = service.getEmployeeClassificationDetails();
+		}catch(Exception e) {
+			e.printStackTrace();
+        	response.setStatus("Failed");
+        	response.setError(e.getMessage());
+        	logger.error(e.getMessage());
+		}
+        
+        logger.info("--- HackathonController::getEmployeeClassificationDetails()::Fetch completed. Classifications count:"+employeeList.size());
+        if (response.getStatus()!= "Failed" ) {
+            response.setStatus("Success");
+        }
+
+        response.setResult(employeeList);
+        logger.info("--- HackathonController::getEmployeeClassificationDetails()::End  ---");
+		return response;
+	}
+	
+	@GetMapping(path="/getPropertyColumnDetails", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Response getPropertyColumnDetails(){
+		
+		logger.info("--- HackathonController::getPropertyColumnDetails()::Start  ---");
+		Response response = new Response();
+		
+		List<Entity> employeeList = new ArrayList<Entity>();
+		
+		try {
+			employeeList = service.getPropertyColumnDetails();
+		}catch(Exception e) {
+			e.printStackTrace();
+        	response.setStatus("Failed");
+        	response.setError(e.getMessage());
+        	logger.error(e.getMessage());
+		}
+        
+        logger.info("--- HackathonController::getPropertyColumnDetails()::Fetch completed. Classifications count:"+employeeList.size());
+        if (response.getStatus()!= "Failed" ) {
+            response.setStatus("Success");
+        }
+
+        response.setResult(employeeList);
+        logger.info("--- HackathonController::getPropertyColumnDetails()::End  ---");
+		return response;
+	}
+	
+	@GetMapping(path="/getEmployeeColumnDetails", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Response getEmployeeColumnDetails(){
+		
+		logger.info("--- HackathonController::getEmployeeColumnDetails()::Start  ---");
+		Response response = new Response();
+		
+		List<Entity> employeeList = new ArrayList<Entity>();
+		
+		try {
+			employeeList = service.getEmployeeColumnDetails();
+		}catch(Exception e) {
+			e.printStackTrace();
+        	response.setStatus("Failed");
+        	response.setError(e.getMessage());
+        	logger.error(e.getMessage());
+		}
+        
+        logger.info("--- HackathonController::getEmployeeColumnDetails()::Fetch completed. Classifications count:"+employeeList.size());
+        if (response.getStatus()!= "Failed" ) {
+            response.setStatus("Success");
+        }
+
+        response.setResult(employeeList);
+        logger.info("--- HackathonController::getEmployeeColumnDetails()::End  ---");
+		return response;
+	}
 }

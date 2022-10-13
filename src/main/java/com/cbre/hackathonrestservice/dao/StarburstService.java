@@ -110,7 +110,7 @@ public class StarburstService {
 		
 		List<Entity> leaseSales = new ArrayList<Entity>();
 		
-		String sql = "SELECT  so.ordernumber, so.saleschannel, so.customerid, c.customername, so.LocationID, l.CityName, so.productid, p.ProductName, so.salesteamid, sm.SalesName, r.Region, so.orderdate, so.shipdate, so.deliverydate, so.quantity, so.currencycode, so.unitcost as \"Amount\" FROM    \"snowflake_test\".\"DATA\".salesorders as so LEFT JOIN \"pg_test\".\"people\".\"customers\" as c ON (c.customerid = so.customerid) LEFT JOIN \"mysql_test\".\"datapoc\".\"Locations\" as l ON (l.locationid = so.locationid) LEFT JOIN \"mysql_test\".\"datapoc\".\"Products\" as p ON (p.ProductID = so.productid) LEFT JOIN \"mysql_test\".\"datapoc\".\"SalesMembers\" as sm ON (sm.SalesTeamID = so.salesteamid) LEFT JOIN \"mysql_test\".\"datapoc\".Regions r ON (r.Region = sm.Region) LIMIT 25 ";
+		String sql = "SELECT DISTINCT  so.ordernumber, so.saleschannel, so.customerid, c.customername, so.LocationID, l.CityName, so.productid, p.ProductName, so.salesteamid, sm.SalesName, r.Region, so.orderdate, so.shipdate, so.deliverydate, so.quantity, so.currencycode, so.unitcost as \"Amount\" FROM    \"snowflake_test\".\"DATA\".salesorders as so LEFT JOIN \"pg_test\".\"people\".\"customers\" as c ON (c.customerid = so.customerid) LEFT JOIN \"mysql_test\".\"datapoc\".\"Locations\" as l ON (l.locationid = so.locationid) LEFT JOIN \"mysql_test\".\"datapoc\".\"Products\" as p ON (p.ProductID = so.productid) LEFT JOIN \"mysql_test\".\"datapoc\".\"SalesMembers\" as sm ON (sm.SalesTeamID = so.salesteamid) LEFT JOIN \"mysql_test\".\"datapoc\".Regions r ON (r.Region = sm.Region) LIMIT 25 ";
 		
 		Connection conn = connection.getConnection();
 		Statement stmt;
@@ -175,5 +175,145 @@ public class StarburstService {
 		 return str.replaceAll(".(?=.{3})", "X");
 		
 		
+	}
+	
+	public List<Entity> getPropertyClassificationDetails() throws Exception{
+		logger.info("--- StarburstService::getPropertyClassificationDetails()::Start  ---");
+		
+		List<Entity> classifications = new ArrayList<Entity>();
+		
+		String sql = "select p.column_name,c.classificationname from \"pg_test\".\"people\".\"tableclassificationpropertydata\" as p,\"pg_test\".\"people\".\"hackathon_classification\" as c where c.classificationid = p.classification";
+		
+		Connection conn = connection.getConnection();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while (rs.next()) {
+           
+           ClassificationDetails classification = new ClassificationDetails();
+           classification.setColumn(rs.getString("column_name"));
+           classification.setClassification(rs.getString("classificationname"));
+           
+           classifications.add(classification);
+           
+        }
+		} catch (SQLException e) {	
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw e;
+		}finally {
+			conn.close();
+		}
+		logger.info("--- StarburstService::getPropertyClassificationDetails()::End  ---");
+		return classifications;
+		
+	}
+	
+	public List<Entity> getEmployeeClassificationDetails() throws Exception{
+		logger.info("--- StarburstService::getEmployeeClassificationDetails()::Start  ---");
+		
+		List<Entity> classifications = new ArrayList<Entity>();
+		
+		String sql = "select p.column_name,c.classificationname from \"pg_test\".\"people\".\"tableclassificationempdata\" as p,\"pg_test\".\"people\".\"hackathon_classification\" as c where c.classificationid = p.classification";
+		
+		Connection conn = connection.getConnection();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while (rs.next()) {
+           
+           ClassificationDetails classification = new ClassificationDetails();
+           classification.setColumn(rs.getString("column_name"));
+           classification.setClassification(rs.getString("classificationname"));
+           
+           classifications.add(classification);
+           
+        }
+		} catch (SQLException e) {	
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw e;
+		}finally {
+			conn.close();
+		}
+		logger.info("--- StarburstService::getEmployeeClassificationDetails()::End  ---");
+		return classifications;
+		
+	}
+
+	public List<Entity> getEmployeeColumnDetails() throws Exception{
+		logger.info("--- StarburstService::getEmployeeColumnDetails()::Start  ---");
+		
+		List<Entity> classifications = new ArrayList<Entity>();
+		
+		String sql = "select p.column_name from \"pg_test\".\"people\".\"tableclassificationempdata\" as p";
+		
+		Connection conn = connection.getConnection();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+		
+        ResultSet rs = stmt.executeQuery(sql);
+        
+        while (rs.next()) {
+           
+           ClassificationDetails classification = new ClassificationDetails();
+           classification.setColumn(rs.getString("column_name"));
+           
+           classifications.add(classification);
+           
+        }
+		} catch (SQLException e) {	
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw e;
+		}finally {
+			conn.close();
+		}
+		logger.info("--- StarburstService::getEmployeeColumnDetails()::End  ---");
+		return classifications;
+	}
+	
+	public List<Entity> getPropertyColumnDetails() throws Exception{
+		logger.info("--- StarburstService::getPropertyColumnDetails()::Start  ---");
+		
+		List<Entity> classifications = new ArrayList<Entity>();
+		
+		String sql = "select p.column_name from \"pg_test\".\"people\".\"tableclassificationpropertydata\" as p";
+		
+		Connection conn = connection.getConnection();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+		
+        ResultSet rs = stmt.executeQuery(sql);
+        
+        while (rs.next()) {
+           
+           ClassificationDetails classification = new ClassificationDetails();
+           classification.setColumn(rs.getString("column_name"));
+           
+           classifications.add(classification);
+           
+        }
+		} catch (SQLException e) {	
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw e;
+		}finally {
+			conn.close();
+		}
+		logger.info("--- StarburstService::getPropertyColumnDetails()::End  ---");
+		return classifications;
 	}
 }
