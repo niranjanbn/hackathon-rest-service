@@ -168,11 +168,11 @@ public class StarburstService {
 	}
 	
 	private String maskPrivateColumns(String str) {
-		return str.replaceAll(".", "X");
+		return str.replaceAll(".", "*");
 	}
 	
 	private String maskConfidentialColumns(String str) {
-		 return str.replaceAll(".(?=.{3})", "X");
+		 return str.replaceAll(".(?=.{3})", "*");
 		
 		
 	}
